@@ -73,20 +73,31 @@ function createNavigation() {
 }
 
 function createSocialLinks() {
+  const iconNames = {
+    Instagram: "instagram",
+    TikTok: "tiktok",
+    YouTube: "youtube"
+  };
+
   return socialLinks
     .map(({ label, href, placeholder }) => {
       const placeholderAttribute = placeholder
         ? 'data-social-placeholder="true"'
         : "";
 
+      const iconName = iconNames[label];
+
       return `
         <a
+          class="social-icon-link"
           href="${href}"
           target="_blank"
           rel="noopener noreferrer"
+          aria-label="Froots on ${label}"
+          title="${label}"
           ${placeholderAttribute}
         >
-          ${label}
+          <i class="bi bi-${iconName}" aria-hidden="true"></i>
         </a>
       `;
     })
