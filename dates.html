@@ -1,0 +1,68 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <title>Dates — Froots</title>
+    <meta
+      name="description"
+      content="Upcoming Froots concerts, announcements, events and past shows."
+    >
+
+    <link rel="stylesheet" href="assets/css/styles.css">
+    <script src="assets/js/components.js" defer></script>
+    <script src="assets/js/events-data.js" defer></script>
+    <script src="assets/js/dates-page.js" defer></script>
+  </head>
+
+  <body>
+    <div data-site-header></div>
+
+    <main>
+      <section class="dates-hero">
+        <div class="container">
+          <p class="eyebrow" style="color: var(--citrus);">Shows · News · Announcements</p>
+          <h1>Where the groove lands next.</h1>
+          <p>
+            Upcoming Froots shows, jams, special announcements, and an archive of
+            where we have played.
+          </p>
+        </div>
+      </section>
+
+      <section class="section">
+        <div class="container">
+          <div class="section-heading">
+            <p class="eyebrow">Upcoming</p>
+            <h2>Dates</h2>
+            <p>
+              Tickets and event details appear here. For booking enquiries, write to
+              <a href="mailto:info@frootsmusic.eu">info@frootsmusic.eu</a>.
+            </p>
+          </div>
+
+          <div class="dates-layout" data-upcoming-events>
+            <!-- Rendered automatically from assets/js/events-data.js -->
+          </div>
+
+          <div class="archive-intro">
+            <p class="eyebrow">Archive</p>
+            <h2>Roots already grown.</h2>
+            <p>
+              Past gigs stay here with posters, memories, review links, photos, or a
+              short thank-you note. This makes the page feel alive even while your
+              concert history is still growing.
+            </p>
+          </div>
+
+          <div class="dates-layout" data-past-events>
+            <!-- Rendered automatically from assets/js/events-data.js -->
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <div data-site-footer></div>
+  </body>
+</html>
