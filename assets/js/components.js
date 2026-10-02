@@ -3,7 +3,26 @@ const currentPage = window.location.pathname.split("/").pop() || "index.html";
 const navigationItems = [
   { label: "Home", href: "index.html" },
   { label: "Dates", href: "dates.html" },
+  { label: "Music", href: "music.html" },
   { label: "About", href: "about.html" }
+];
+
+const socialLinks = [
+  {
+    label: "Instagram",
+    href: "https://instagram.com/",
+    placeholder: true
+  },
+  {
+    label: "TikTok",
+    href: "https://tiktok.com/",
+    placeholder: true
+  },
+  {
+    label: "YouTube",
+    href: "https://youtube.com/",
+    placeholder: true
+  }
 ];
 
 function createNavigation() {
@@ -43,16 +62,32 @@ function createNavigation() {
         <nav id="primary-navigation" class="primary-nav" aria-label="Primary navigation">
           <ul>
             ${navLinks}
-            <li>
-              <a class="nav-booking-link" href="mailto:info@frootsmusic.eu">
-                Booking
-              </a>
-            </li>
           </ul>
         </nav>
       </div>
     </header>
   `;
+}
+
+function createSocialLinks() {
+  return socialLinks
+    .map(({ label, href, placeholder }) => {
+      const placeholderAttribute = placeholder
+        ? 'data-social-placeholder="true"'
+        : "";
+
+      return `
+        <a
+          href="${href}"
+          target="_blank"
+          rel="noopener noreferrer"
+          ${placeholderAttribute}
+        >
+          ${label}
+        </a>
+      `;
+    })
+    .join("");
 }
 
 function createFooter() {
@@ -61,20 +96,27 @@ function createFooter() {
   return `
     <footer class="site-footer">
       <div class="site-footer__inner container">
-        <div>
+        <div class="footer__identity">
           <p class="footer__brand">Froots</p>
-          <p class="footer__line">Reggae &amp; Funk from Munich.</p>
+          <p class="footer__line">Reggae &amp; funk from Munich.</p>
         </div>
 
-        <div class="footer__contact">
-          <a href="mailto:info@frootsmusic.eu">info@frootsmusic.eu</a>
-          <a href="impressum.html">Impressum</a>
-          <a href="privacy.html">Datenschutz</a>
+        <div class="footer__links">
+          <a class="footer__email" href="mailto:info@frootsmusic.eu">
+            info@frootsmusic.eu
+          </a>
+
+          <div class="footer__social-links" aria-label="Froots social media">
+            ${createSocialLinks()}
+          </div>
+
+          <div class="footer__legal-links">
+            <a href="impressum.html">Impressum</a>
+            <a href="datenschutz.html">Datenschutz</a>
+          </div>
         </div>
 
-        <p class="footer__copyright">
-          © ${year} Froots
-        </p>
+        <p class="footer__copyright">© ${year} Froots</p>
       </div>
     </footer>
   `;

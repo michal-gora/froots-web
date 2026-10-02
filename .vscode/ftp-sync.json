@@ -1,0 +1,28 @@
+{
+    "remotePath": "./",
+    "host": "h2park-8d750cc5.infomaniak.ch",
+    "username": "zy4w9e_michal",
+    "password": "m_EWz.Hw.3W4r_6",
+    "port": 21,
+    "secure": false,
+    "protocol": "ftp",
+    "uploadOnSave": false,
+    "passive": false,
+    "debug": false,
+    "privateKeyPath": null,
+    "passphrase": null,
+    "agent": null,
+    "allow": [],
+    "ignore": [
+        "\\.vscode",
+        "\\.git",
+        "\\.DS_Store",
+        "\\.ftpquota"
+    ],
+    "generatedFiles": {
+        "extensionsToInclude": [
+            ""
+        ],
+        "path": ""
+    }
+}

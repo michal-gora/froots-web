@@ -5,113 +5,118 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
 
     <title>Froots — Reggae & Funk from Munich</title>
+
     <meta
       name="description"
-      content="Froots are a reggae and funk band from Munich. Find upcoming shows, music, news and booking information."
+      content="Froots are a reggae and funk band from Munich. Find shows, live music, videos and band news at frootsmusic.eu."
     >
 
     <link rel="stylesheet" href="assets/css/styles.css">
+
     <script src="assets/js/components.js" defer></script>
+    <script src="assets/js/events-data.js" defer></script>
+    <script src="assets/js/home-page.js" defer></script>
   </head>
 
   <body>
     <div data-site-header></div>
 
     <main>
-      <section class="hero">
-        <div class="hero__inner container">
-          <div class="hero__copy">
-            <p class="eyebrow">Reggae &amp; Funk · Munich</p>
+      <section class="band-hero">
+        <div class="band-hero__inner container">
+          <div class="band-hero__copy">
+            <p class="eyebrow">Reggae &amp; funk · Munich</p>
 
-            <h1>Roots in rhythm.<br>Fruits in groove.</h1>
+            <h1>Roots in rhythm.<br>Froots in groove.</h1>
 
-            <p>
-              Froots bring warm reggae pulse, deep-pocket funk, and live energy
-              from Munich. Replace this paragraph with your own one- or two-sentence
-              band introduction: who you are, what your live sound feels like, and
-              what makes Froots distinct.
+            <p class="band-hero__intro">
+              Replace this with your own honest one- or two-sentence statement.
+              Describe what Froots sounds and feels like—not a formal press release.
+              For example: “Warm reggae pulse, deep funk pockets, and good
+              vibrations grown in Munich.”
             </p>
 
-            <div class="hero__actions">
-              <a class="button" href="dates.html">See upcoming dates</a>
-              <a class="button button--outline" href="mailto:info@frootsmusic.eu">
-                Booking &amp; contact
-              </a>
+            <div class="band-hero__actions">
+              <a class="button" href="dates.html">Find us live</a>
+              <a class="button button--outline" href="music.html">Watch &amp; listen</a>
             </div>
           </div>
 
-          <div>
-            <div class="hero__logo-frame">
-              <img
-                src="assets/images/logo/froots-logo-colour-horizontal-1376x768.jpg"
-                alt="Froots logo"
-              >
-            </div>
-
-            <p class="hero__note">
-              Replace this JPG with
-              <code>froots-logo-colour-transparent-horizontal-2400x1340.png</code>
-              once available.
-            </p>
-          </div>
-        </div>
-      </section>
-
-      <section class="section">
-        <div class="container intro-grid">
-          <div class="intro-grid__image" role="img" aria-label="Froots performing live"></div>
-
-          <div class="intro-grid__content">
-            <p class="eyebrow">The sound</p>
-            <h2>Good vibrations, played loud.</h2>
-
-            <p>
-              Replace this copy with your real band story. A good version could
-              mention the musicians, the mix of reggae and funk influences, whether
-              you write original material or reinterpret classics, and what people
-              can expect at a Froots show.
-            </p>
-
-            <p>
-              Example structure: “Built in Munich and powered by [instruments /
-              band members], Froots move between [specific reggae influence] and
-              [specific funk influence], with [your distinguishing musical feature].”
-            </p>
-
-            <a class="button button--outline" href="about.html">Meet Froots</a>
+          <div class="band-hero__art">
+            <img
+              src="assets/images/logo/froots-logo-colour-horizontal-1376x768.jpg"
+              alt="Froots logo: an organic fruit-and-root illustration"
+            >
           </div>
         </div>
       </section>
 
       <section class="section section--paper">
         <div class="container">
-          <div class="section-heading">
-            <p class="eyebrow">Live and direct</p>
-            <h2>Catch us in the groove.</h2>
-            <p>
-              Keep this section short. The dates page is the authoritative concert
-              listing; this simply sends visitors there.
-            </p>
+          <div data-home-next-event>
+            <!-- Rendered automatically by assets/js/home-page.js -->
           </div>
+        </div>
+      </section>
 
-          <a class="button" href="dates.html">All shows &amp; announcements</a>
+      <section class="section">
+        <div class="container band-story">
+          <div
+            class="band-story__image"
+            role="img"
+            aria-label="Froots playing live"
+          ></div>
+
+          <div class="band-story__copy">
+            <p class="eyebrow">A little bit about us</p>
+
+            <h2>Munich-grown rhythm.</h2>
+
+            <p>
+              Replace this with your actual band story. Keep it human, specific,
+              and short: how the band formed, what you love playing together,
+              whether you write originals, play selected covers, improvise, or
+              mix all of those things.
+            </p>
+
+            <p>
+              Good raw material for this section could be your real influences,
+              favourite rhythms, your instruments, and what a Froots gig feels
+              like from the audience side.
+            </p>
+
+            <a class="text-link" href="about.html">
+              More about Froots <span aria-hidden="true">→</span>
+            </a>
+          </div>
         </div>
       </section>
 
       <section class="section section--dark">
-        <div class="container">
-          <div class="section-heading">
-            <p class="eyebrow" style="color: var(--citrus);">Booking</p>
-            <h2>Bring Froots to your stage.</h2>
-            <p style="color: rgba(255, 248, 231, 0.8);">
-              For club shows, festivals, private events, collaborations, and all
-              booking enquiries:
+        <div class="container watch-listen">
+          <div class="watch-listen__copy">
+            <p class="eyebrow eyebrow--citrus">Live, loud, and growing</p>
+
+            <h2>Watch. Listen. Keep in touch.</h2>
+
+            <p>
+              This will become the home for live sessions, videos, recordings,
+              and whatever we make next. Until then, find Froots on the channels
+              below—or come see us in person.
             </p>
+
+            <div class="watch-listen__links">
+              <a href="music.html" class="button">Music &amp; video</a>
+              <a href="dates.html" class="button button--light-outline">All dates</a>
+            </div>
           </div>
 
-          <a class="button" href="mailto:info@frootsmusic.eu">
-            info@frootsmusic.eu
-          </a>
+          <div class="watch-listen__wordmark" aria-hidden="true">
+            <img
+              src="assets/images/logo/froots-logo-white-horizontal-1376x768.jpg"
+              alt=""
+            >
+          </div>
         </div>
       </section>
     </main>

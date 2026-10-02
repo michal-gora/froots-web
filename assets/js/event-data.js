@@ -8,16 +8,16 @@ const events = [
     venue: "Example Venue",
     city: "Munich",
     country: "Germany",
-    address: "Example Street 12, 80331 Munich",
+    address: "Replace with venue address if useful",
     ticketUrl: "https://example.com/tickets",
     ticketLabel: "Get tickets",
     price: "€12 presale · €15 door",
     poster: "assets/images/flyers/2026-06-14-example-venue-munich-poster-1200x1697.jpg",
     description:
-      "Replace this with a short description: special guests, supporting bands, the occasion, or a one-line invitation.",
+      "Replace this with one short, friendly sentence about the night: special guests, support acts, a summer session, a release celebration, or whatever makes it yours.",
     status: "upcoming",
     featured: true,
-    entryNote: "18+ / accessibility information goes here"
+    entryNote: "Replace with any useful note: accessibility, 18+, support act, or free entry."
   },
 
   {
@@ -35,7 +35,7 @@ const events = [
     price: "Pay what you can",
     poster: "",
     description:
-      "Replace with a short note about the jam format, invited musicians, or whether instruments are welcome.",
+      "Replace this with a note about the jam: invited players, instruments welcome, community night, or simply a friendly invitation.",
     status: "upcoming",
     featured: false,
     entryNote: "Bring good energy."
@@ -50,13 +50,13 @@ const events = [
     venue: "Example Club",
     city: "Munich",
     country: "Germany",
-    address: "Example Alley 4, 80469 Munich",
+    address: "Replace with the venue address if useful",
     ticketUrl: "",
     ticketLabel: "",
-    price: "Past event",
+    price: "",
     poster: "assets/images/flyers/2026-03-21-example-venue-munich-poster-1200x1697.jpg",
     description:
-      "Replace this with a short archive note, review quote, photo-gallery link, or thank-you message.",
+      "Replace with a little archive memory: a thank-you, a photograph link, a favourite moment, or a short review quote.",
     status: "past",
     featured: false,
     entryNote: ""

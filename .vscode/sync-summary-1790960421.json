@@ -1,0 +1,25 @@
+{
+    "_readMe": "Review list of sync operations, then use Ftp-sync: Commit command to accept changes. Note that if you're not in your root directory then all the parent directories will also be uploaded",
+    "_warning": "This file should not be saved, reopened review file won't work!",
+    "filesToUpdate": [],
+    "filesToAdd": [
+        ".ftpquota",
+        "about.html",
+        "dates.html",
+        "impressum.html",
+        "index.html",
+        "indexold.html",
+        "privacy.html",
+        "assets/css/styles.css",
+        "assets/js/components.js",
+        "assets/js/dates-page.js",
+        "assets/js/event-data.js"
+    ],
+    "dirsToAdd": [
+        "assets",
+        "assets/css",
+        "assets/js"
+    ],
+    "filesToRemove": [],
+    "dirsToRemove": []
+}
