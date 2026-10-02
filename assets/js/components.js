@@ -111,11 +111,15 @@ function createFooter() {
     <footer class="site-footer">
       <div class="site-footer__inner container">
         <div class="footer__identity">
-          <img
-            class="footer__logo"
+          <a class="footer__logo-link" href="index.html" aria-label="Froots home">
+            <img
+              class="footer__logo"
             src="assets/icons/froots-logo-white.svg"
-            alt="Froots"
-          >
+              alt="Froots"
+            >
+          </a>
+
+          <p class="brand__tagline">Reggae &amp; funk from Munich.</p>
         </div>
 
         <div class="footer__links">
