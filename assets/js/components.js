@@ -114,7 +114,7 @@ function createFooter() {
           <a class="footer__logo-link" href="index.html" aria-label="Froots home">
             <img
               class="footer__logo"
-            src="assets/icons/froots-logo-white.svg"
+              src="assets/icons/froots-logo-white.svg"
               alt="Froots"
             >
           </a>
@@ -130,14 +130,16 @@ function createFooter() {
           <div class="footer__social-links" aria-label="Froots social media">
             ${createSocialLinks()}
           </div>
-
-          <div class="footer__legal-links">
-            <a href="impressum.html">Impressum</a>
-            <a href="datenschutz.html">Datenschutz</a>
-          </div>
         </div>
 
-        <p class="footer__copyright">© ${year} Froots</p>
+        <div class="footer__bottom">
+          <p class="footer__copyright">© ${year} Froots</p>
+
+          <nav class="footer__legal-links" aria-label="Legal links">
+            <a href="impressum.html">Impressum</a>
+            <a href="datenschutz.html">Datenschutz</a>
+          </nav>
+        </div>
       </div>
     </footer>
   `;
