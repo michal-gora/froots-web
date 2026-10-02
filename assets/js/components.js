@@ -43,8 +43,11 @@ function createNavigation() {
     <header class="site-header">
       <div class="site-header__inner container">
         <a class="brand" href="index.html" aria-label="Froots home">
-          <span class="brand__name">Froots</span>
-          <span class="brand__tagline">Reggae &amp; Funk · Munich</span>
+          <img
+            class="brand__logo"
+            src="assets/icons/froots-logo-black.svg"
+            alt="Froots"
+          >
         </a>
 
         <button
@@ -97,8 +100,11 @@ function createFooter() {
     <footer class="site-footer">
       <div class="site-footer__inner container">
         <div class="footer__identity">
-          <p class="footer__brand">Froots</p>
-          <p class="footer__line">Reggae &amp; funk from Munich.</p>
+          <img
+            class="footer__logo"
+            src="assets/icons/froots-logo-white.svg"
+            alt="Froots"
+          >
         </div>
 
         <div class="footer__links">
