@@ -207,7 +207,6 @@ document.addEventListener("DOMContentLoaded", () => {
 
 const events = [
   {
-    id: "2026-05-15-laute-nachte-mai-26",
     date: "2026-05-15",
     doors: "18:30",
     showTime: "19:00",
@@ -216,19 +215,17 @@ const events = [
     city: "Munich",
     country: "Germany",
     address: "Replace with venue address if useful",
-    ticketUrl: "",
-    ticketLabel: "Get tickets",
+    url: "",
+    urlLabel: "",
     price: "€5",
+    showPrice: true,
     poster: "/images/flyers/laute-nacht-mai26.jpg",
     description:
       "Replace this with one short, friendly sentence about the night: special guests, support acts, a summer session, a release celebration, or whatever makes it yours.",
-    status: "past",
-    featured: true,
     entryNote: "Replace with any useful note: accessibility, 18+, support act, or free entry."
   },
 
   {
-    id: "2026-06-14-munich-summer-groove",
     date: "2026-06-14",
     doors: "19:00",
     showTime: "20:30",
@@ -237,19 +234,17 @@ const events = [
     city: "Munich",
     country: "Germany",
     address: "Replace with venue address if useful",
-    ticketUrl: "https://example.com/tickets",
-    ticketLabel: "Get tickets",
+    url: "https://example.com/tickets",
+    urlLabel: "More information",
     price: "€12 presale · €15 door",
-    poster: "/images/flyers/2026-06-14-example-venue-munich-poster-1200x1697.jpg",
+    showPrice: true,
+    poster: "",
     description:
       "Replace this with one short, friendly sentence about the night: special guests, support acts, a summer session, a release celebration, or whatever makes it yours.",
-    status: "upcoming",
-    featured: true,
     entryNote: "Replace with any useful note: accessibility, 18+, support act, or free entry."
   },
 
   {
-    id: "2026-05-09-froots-community-jam",
     date: "2026-05-09",
     doors: "18:30",
     showTime: "19:30",
@@ -258,19 +253,17 @@ const events = [
     city: "Munich",
     country: "Germany",
     address: "",
-    ticketUrl: "",
-    ticketLabel: "",
+    url: "",
+    urlLabel: "",
     price: "Pay what you can",
+    showPrice: true,
     poster: "",
     description:
       "Replace this with a note about the jam: invited players, instruments welcome, community night, or simply a friendly invitation.",
-    status: "upcoming",
-    featured: false,
     entryNote: "Bring good energy."
   },
 
   {
-    id: "2026-03-21-froots-live",
     date: "2026-03-21",
     doors: "20:00",
     showTime: "21:00",
@@ -279,20 +272,23 @@ const events = [
     city: "Munich",
     country: "Germany",
     address: "Replace with the venue address if useful",
-    ticketUrl: "",
-    ticketLabel: "",
+    url: "",
+    urlLabel: "",
     price: "",
-    poster: "/images/flyers/2026-03-21-example-venue-munich-poster-1200x1697.jpg",
+    showPrice: true,
+    poster: "",
     description:
       "Replace with a little archive memory: a thank-you, a photograph link, a favourite moment, or a short review quote.",
-    status: "past",
-    featured: false,
     entryNote: ""
   }
 ];
 
 function formatHomeEventDate(dateString) {
   const date = new Date(`${dateString}T12:00:00`);
+
+  if (!hasValue(dateString) || Number.isNaN(date.getTime())) {
+    return "Date to be announced";
+  }
 
   return new Intl.DateTimeFormat("en-GB", {
     weekday: "short",
@@ -302,53 +298,27 @@ function formatHomeEventDate(dateString) {
   }).format(date);
 }
 
-function isHomePastEvent(event) {
-  const today = new Date();
-  today.setHours(0, 0, 0, 0);
-
-  const eventDate = new Date(`${event.date}T23:59:59`);
-
-  return eventDate < today || event.status === "past";
-}
-
 function getNextEvent() {
   const upcomingEvents = events
-    .filter((event) => !isHomePastEvent(event))
+    .filter((event) => !isPastEvent(event))
     .sort((a, b) => new Date(a.date) - new Date(b.date));
 
-  const featuredEvent = upcomingEvents.find((event) => event.featured);
-
-  return featuredEvent || upcomingEvents[0] || null;
+  return upcomingEvents[0] || null;
 }
 
 function createHomeEventMarkup(event) {
-  if (!event) {
-    return `
-      <div class="home-next-event home-next-event--empty">
-        <div class="home-next-event__content">
-          <p class="eyebrow">Next up</p>
-          <h2>Fresh dates are growing.</h2>
-          <p>
-            We are working on the next chance to share a groove with you.
-            Check back soon, or follow our channels for updates.
-          </p>
-          <a class="button" href="/dates/">See all dates</a>
-        </div>
-      </div>
-    `;
-  }
-
-  const posterMarkup = event.poster
+  const posterMarkup = hasValue(event.poster)
     ? `
       <a
         class="home-next-event__poster"
-        href="/dates/"
-        aria-label="See details for ${event.title}"
+        href="${event.poster.trim()}"
+        aria-label="Open full-size flyer for ${event.title || "Froots"}"
       >
         <img
-          src="${event.poster}"
-          alt="Poster for ${event.title} at ${event.venue}, ${event.city}"
+          src="${event.poster.trim()}"
+          alt="Poster for ${event.title || "Froots"} at ${event.venue || "venue to be announced"}"
         >
+        <span class="flyer-link__hint">Open full-size flyer <span aria-hidden="true">↗</span></span>
       </a>
     `
     : `
@@ -366,16 +336,9 @@ function createHomeEventMarkup(event) {
     ? `<p class="home-next-event__time">${timeParts.join(" · ")}</p>`
     : "";
 
-  const buttonMarkup = event.ticketUrl
+  const buttonMarkup = hasValue(event.url)
     ? `
-      <a
-        class="button"
-        href="${event.ticketUrl}"
-        target="_blank"
-        rel="noopener noreferrer"
-      >
-        ${event.ticketLabel || "Get tickets"}
-      </a>
+      ${createEventLink(event, false, "button")}
       <a class="button button--outline" href="/dates/">All dates</a>
     `
     : `<a class="button" href="/dates/">See all dates</a>`;
@@ -388,11 +351,11 @@ function createHomeEventMarkup(event) {
         <p class="eyebrow">Next up</p>
         <p class="home-next-event__date">${formatHomeEventDate(event.date)}</p>
 
-        <h2>${event.title}</h2>
+        <h2>${event.title || "Froots"}</h2>
 
         <p class="home-next-event__venue">
-          <strong>${event.venue}</strong><br>
-          ${event.city}${event.country ? `, ${event.country}` : ""}
+          <strong>${event.venue || "Venue to be announced"}</strong><br>
+          ${[event.city, event.country].filter(hasValue).join(", ")}
         </p>
 
         ${timeMarkup}
@@ -414,13 +377,28 @@ function createHomeEventMarkup(event) {
 function renderHomeNextEvent() {
   const target = document.querySelector("[data-home-next-event]");
 
-  if (!target || typeof events === "undefined") return;
+  if (!target) return;
 
-  target.innerHTML = createHomeEventMarkup(getNextEvent());
+  const nextEvent = getNextEvent();
+
+  if (!nextEvent) {
+    (target.closest("[data-home-next-event-section]") || target).remove();
+    return;
+  }
+
+  target.innerHTML = createHomeEventMarkup(nextEvent);
+}
+
+function hasValue(value) {
+  return typeof value === "string" && value.trim().length > 0;
 }
 
 function formatEventDate(dateString) {
   const date = new Date(`${dateString}T12:00:00`);
+
+  if (!hasValue(dateString) || Number.isNaN(date.getTime())) {
+    return "Date to be announced";
+  }
 
   return new Intl.DateTimeFormat("en-GB", {
     weekday: "short",
@@ -451,10 +429,10 @@ function isPastEvent(event) {
   today.setHours(0, 0, 0, 0);
 
   const eventDate = new Date(`${event.date}T23:59:59`);
-  return eventDate < today || event.status === "past";
+  return !Number.isNaN(eventDate.getTime()) && eventDate < today;
 }
 
-function createStatusLabel(status) {
+function createTicketStatusLabel(status) {
   const statusLabels = {
     "sold-out": "Sold out",
     cancelled: "Cancelled",
@@ -474,63 +452,59 @@ function createTimeLine(event) {
   return parts.length ? `<p class="event-card__time">${parts.join(" · ")}</p>` : "";
 }
 
-function createTicketArea(event, pastEvent) {
+function createEventLink(event, pastEvent = false, className = "button button--small") {
   if (pastEvent) {
     return `<span class="event-card__archive-label">Past show</span>`;
   }
 
-  if (event.status === "cancelled") {
+  if (event.ticketStatus === "cancelled") {
     return `<span class="event-card__archive-label">This event has been cancelled</span>`;
   }
 
-  if (event.status === "sold-out") {
+  if (event.ticketStatus === "sold-out") {
     return `<span class="event-card__archive-label">Tickets sold out</span>`;
   }
 
-  if (event.ticketUrl) {
-    const label = event.ticketLabel || "Get tickets";
-
-    return `
-      <a
-        class="button button--small"
-        href="${event.ticketUrl}"
-        target="_blank"
-        rel="noopener noreferrer"
-      >
-        ${label}
-      </a>
-    `;
+  if (!hasValue(event.url)) {
+    return `<span class="event-card__archive-label">More details soon</span>`;
   }
 
-  return `<span class="event-card__archive-label">More details soon</span>`;
+  const external = /^https?:\/\//i.test(event.url.trim());
+  const target = external ? ' target="_blank" rel="noopener noreferrer"' : "";
+
+  return `
+    <a class="${className}" href="${event.url.trim()}"${target}>
+      ${hasValue(event.urlLabel) ? event.urlLabel.trim() : "More information"}
+    </a>
+  `;
 }
 
 function createEventCard(event, pastEvent = false) {
-  const posterMarkup = event.poster
+  const posterMarkup = hasValue(event.poster)
     ? `
       <a
         class="event-card__poster"
-        href="${event.poster}"
-        aria-label="Open poster for ${event.title}"
+        href="${event.poster.trim()}"
+        aria-label="Open full-size flyer for ${event.title || "Froots"}"
       >
         <img
-          src="${event.poster}"
-          alt="Poster for ${event.title} at ${event.venue}, ${event.city}"
+          src="${event.poster.trim()}"
+          alt="Poster for ${event.title || "Froots"} at ${event.venue || "venue to be announced"}"
           loading="lazy"
         >
+        <span class="flyer-link__hint">Open full-size flyer <span aria-hidden="true">↗</span></span>
       </a>
     `
     : `
       <div class="event-card__poster event-card__poster--placeholder" aria-hidden="true">
-        <span>Froots</span>
+        <img src="/images/logo/froots-logo-colour-horizontal-1376x768.jpg">
       </div>
     `;
 
-  const featuredClass = event.featured ? "event-card--featured" : "";
   const pastClass = pastEvent ? "event-card--past" : "";
 
   return `
-    <article class="event-card ${featuredClass} ${pastClass}">
+    <article class="event-card ${pastClass}">
       <div class="event-card__date-block" aria-label="${formatEventDate(event.date)}">
         <span class="event-card__day">${formatDay(event.date)}</span>
         <span class="event-card__month">${formatMonth(event.date)}</span>
@@ -542,39 +516,39 @@ function createEventCard(event, pastEvent = false) {
         <div class="event-card__heading">
           <div>
             <p class="event-card__full-date">${formatEventDate(event.date)}</p>
-            <h2>${event.title}</h2>
+            <h2>${event.title || "Froots"}</h2>
           </div>
-          ${createStatusLabel(event.status)}
+          ${createTicketStatusLabel(event.ticketStatus)}
         </div>
 
         <p class="event-card__venue">
-          <strong>${event.venue}</strong>
-          <span>${event.city}${event.country ? `, ${event.country}` : ""}</span>
+          <strong>${event.venue || "Venue to be announced"}</strong>
+          ${[event.city, event.country].filter(hasValue).length ? `<span>${[event.city, event.country].filter(hasValue).join(", ")}</span>` : ""}
         </p>
 
         ${createTimeLine(event)}
 
         ${
-          event.description
-            ? `<p class="event-card__description">${event.description}</p>`
+          hasValue(event.description)
+            ? `<p class="event-card__description">${event.description.trim()}</p>`
             : ""
         }
 
         ${
-          event.price
-            ? `<p class="event-card__price">${event.price}</p>`
+          event.showPrice !== false && hasValue(event.price)
+            ? `<p class="event-card__price">${event.price.trim()}</p>`
             : ""
         }
 
         ${
-          event.entryNote
-            ? `<p class="event-card__note">${event.entryNote}</p>`
+          hasValue(event.entryNote)
+            ? `<p class="event-card__note">${event.entryNote.trim()}</p>`
             : ""
         }
       </div>
 
       <div class="event-card__action">
-        ${createTicketArea(event, pastEvent)}
+        ${createEventLink(event, pastEvent)}
       </div>
     </article>
   `;
@@ -583,6 +557,7 @@ function createEventCard(event, pastEvent = false) {
 function renderEvents() {
   const upcomingTarget = document.querySelector("[data-upcoming-events]");
   const archiveTarget = document.querySelector("[data-past-events]");
+  const upcomingSection = document.querySelector("[data-upcoming-section]");
 
   if (!upcomingTarget || !archiveTarget) return;
 
@@ -596,14 +571,11 @@ function renderEvents() {
 
   const pastEvents = sortedEvents.filter((event) => isPastEvent(event));
 
-  upcomingTarget.innerHTML = upcomingEvents.length
-    ? upcomingEvents.map((event) => createEventCard(event)).join("")
-    : `
-      <div class="empty-events-message">
-        <p>New Froots dates are growing soon.</p>
-        <p>Follow us or write to <a href="mailto:info@frootsmusic.eu">info@frootsmusic.eu</a> for booking and news.</p>
-      </div>
-    `;
+  if (upcomingEvents.length) {
+    upcomingTarget.innerHTML = upcomingEvents.map((event) => createEventCard(event)).join("");
+  } else {
+    upcomingSection?.remove();
+  }
 
   archiveTarget.innerHTML = pastEvents.length
     ? pastEvents.map((event) => createEventCard(event, true)).join("")
