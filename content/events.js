@@ -35,7 +35,7 @@ window.frootsEvents = [
   },
   {
     "date": "2026-05-09",
-    "title": "SommersonnenwendJAM",
+    "title": "Sommer&shy;sonnenwend&shy;JAM",
     "venue": "Flaucher",
     "city": "Munich",
     "country": "Germany",
