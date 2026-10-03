@@ -276,7 +276,7 @@
 
 .event-card {
   display: grid;
-  grid-template-columns: 86px 130px minmax(0, 1fr);
+  grid-template-columns: 86px 160px minmax(0, 1fr);
   gap: 1.5rem;
   align-items: center;
   padding: 1rem;
@@ -284,10 +284,6 @@
   border-radius: var(--border-radius);
   background: var(--paper-light);
   box-shadow: 0 7px 17px rgba(71, 41, 17, 0.06);
-}
-
-.event-card--past {
-  opacity: 0.78;
 }
 
 .event-card--featured {
@@ -328,7 +324,7 @@
   display: block;
   overflow: hidden;
   width: 100%;
-  max-width: 130px;
+  max-width: 160px;
   max-height: 220px;
   border-radius: 9px;
   background: var(--leaf-dark);
@@ -436,6 +432,28 @@
   color: var(--ink-soft);
 }
 
+.event-card__address {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.35rem 0.55rem;
+  align-items: baseline;
+  margin: 0.35rem 0 0;
+  color: var(--ink-soft);
+  font-size: 0.9rem;
+}
+
+.event-card__address-label {
+  color: var(--leaf-dark);
+  font-size: 0.68rem;
+  font-weight: 900;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+
+.event-card__address-value {
+  min-width: 0;
+}
+
 .event-card__time,
 .event-card__price,
 .event-card__note,
@@ -452,6 +470,16 @@
 
 .event-card__note {
   font-size: 0.82rem;
+}
+
+.event-card__note-icon {
+  display: inline-flex;
+  width: 0.85rem;
+  justify-content: center;
+  margin-right: 0.35rem;
+  color: var(--leaf-dark);
+  font-size: 0.82rem;
+  vertical-align: -0.05em;
 }
 
 .event-card__action {

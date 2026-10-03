@@ -9,6 +9,10 @@
   padding: 5.75rem 0;
 }
 
+.dates-events-section {
+  padding-top: 3.5rem;
+}
+
 .section--paper {
   background: var(--paper);
 }
@@ -100,7 +104,8 @@
 
 .brand__logo {
   display: block;
-  width: 60%;
+  margin-top: 13px;
+  width: 50%;
   height: auto;
 }
 
@@ -552,6 +557,10 @@
 
   .section {
     padding: 4rem 0;
+  }
+
+  .dates-events-section {
+    padding-top: 2.5rem;
   }
 
   .band-hero__inner {

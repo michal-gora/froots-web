@@ -1,0 +1,34 @@
+{
+  "navigation": [
+    { "label": "Home", "href": "/" },
+    { "label": "Dates", "href": "/dates/" },
+    { "label": "Music", "href": "/music/" },
+    { "label": "About", "href": "/about/" }
+  ],
+  "socialLinks": [
+    {
+      "label": "Instagram",
+      "href": "https://instagram.com/",
+      "icon": "instagram",
+      "placeholder": true
+    },
+    {
+      "label": "TikTok",
+      "href": "https://tiktok.com/",
+      "icon": "tiktok",
+      "placeholder": true
+    },
+    {
+      "label": "YouTube",
+      "href": "https://youtube.com/",
+      "icon": "youtube",
+      "placeholder": true
+    }
+  ],
+  "contactEmail": "info@frootsmusic.eu",
+  "tagline": "Reggae & funk from Munich.",
+  "legalLinks": [
+    { "label": "Impressum", "href": "/impressum/" },
+    { "label": "Datenschutz", "href": "/datenschutz/" }
+  ]
+}

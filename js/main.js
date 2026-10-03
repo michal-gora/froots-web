@@ -2,31 +2,6 @@ const currentPage = window.location.pathname === "/"
   ? "/"
   : `${window.location.pathname.replace(/\/+$/, "")}/`;
 
-const navigationItems = [
-  { label: "Home", href: "/" },
-  { label: "Dates", href: "/dates/" },
-  { label: "Music", href: "/music/" },
-  { label: "About", href: "/about/" }
-];
-
-const socialLinks = [
-  {
-    label: "Instagram",
-    href: "https://instagram.com/",
-    placeholder: true
-  },
-  {
-    label: "TikTok",
-    href: "https://tiktok.com/",
-    placeholder: true
-  },
-  {
-    label: "YouTube",
-    href: "https://youtube.com/",
-    placeholder: true
-  }
-];
-
 function addFavicon() {
   const existingFavicon = document.querySelector('link[rel="icon"]');
 
@@ -56,8 +31,8 @@ function addFavicon() {
   document.head.appendChild(themeColor);
 }
 
-function createNavigation() {
-  const navLinks = navigationItems
+function createNavigation(siteContent) {
+  const navLinks = (siteContent.navigation || [])
     .map(({ label, href }) => {
       const isCurrent = href === currentPage;
       const currentAttribute = isCurrent ? 'aria-current="page"' : "";
@@ -103,20 +78,12 @@ function createNavigation() {
   `;
 }
 
-function createSocialLinks() {
-  const iconNames = {
-    Instagram: "instagram",
-    TikTok: "tiktok",
-    YouTube: "youtube"
-  };
-
+function createSocialLinks(socialLinks) {
   return socialLinks
-    .map(({ label, href, placeholder }) => {
+    .map(({ label, href, icon, placeholder }) => {
       const placeholderAttribute = placeholder
         ? 'data-social-placeholder="true"'
         : "";
-
-      const iconName = iconNames[label];
 
       return `
         <a
@@ -128,15 +95,22 @@ function createSocialLinks() {
           title="${label}"
           ${placeholderAttribute}
         >
-          <i class="bi bi-${iconName}" aria-hidden="true"></i>
+          <i class="bi bi-${icon}" aria-hidden="true"></i>
         </a>
       `;
     })
     .join("");
 }
 
-function createFooter() {
+function createFooter(siteContent) {
   const year = new Date().getFullYear();
+  const email = siteContent.contactEmail || "";
+  const socialLinks = Array.isArray(siteContent.socialLinks)
+    ? siteContent.socialLinks
+    : [];
+  const legalLinks = Array.isArray(siteContent.legalLinks)
+    ? siteContent.legalLinks
+    : [];
 
   return `
     <footer class="site-footer">
@@ -150,16 +124,14 @@ function createFooter() {
             >
           </a>
 
-          <p class="brand__tagline">Reggae &amp; funk from Munich.</p>
+          <p class="brand__tagline">${siteContent.tagline || ""}</p>
         </div>
 
         <div class="footer__links">
-          <a class="footer__email" href="mailto:info@frootsmusic.eu">
-            info@frootsmusic.eu
-          </a>
+          ${email ? `<a class="footer__email" href="mailto:${email}">${email}</a>` : ""}
 
           <div class="footer__social-links" aria-label="Froots social media">
-            ${createSocialLinks()}
+            ${createSocialLinks(socialLinks)}
           </div>
         </div>
 
@@ -167,8 +139,7 @@ function createFooter() {
           <p class="footer__copyright">© ${year} Froots</p>
 
           <nav class="footer__legal-links" aria-label="Legal links">
-            <a href="/impressum/">Impressum</a>
-            <a href="/datenschutz/">Datenschutz</a>
+            ${legalLinks.map(({ label, href }) => `<a href="${href}">${label}</a>`).join("")}
           </nav>
         </div>
       </div>
@@ -193,95 +164,41 @@ function setupMobileNavigation() {
   });
 }
 
-document.addEventListener("DOMContentLoaded", () => {
+async function loadContentFile(path, fallback) {
+  try {
+    const response = await fetch(path);
+
+    if (!response.ok) {
+      throw new Error(`Request failed with status ${response.status}`);
+    }
+
+    return await response.json();
+  } catch (error) {
+    console.error(`Unable to load ${path}`, error);
+    return fallback;
+  }
+}
+
+async function initializePage() {
   addFavicon();
+
+  const [siteContent, events] = await Promise.all([
+    loadContentFile("/content/site.json", {}),
+    loadContentFile("/content/events.json", [])
+  ]);
 
   const headerTarget = document.querySelector("[data-site-header]");
   const footerTarget = document.querySelector("[data-site-footer]");
 
-  if (headerTarget) headerTarget.innerHTML = createNavigation();
-  if (footerTarget) footerTarget.innerHTML = createFooter();
+  if (headerTarget) headerTarget.innerHTML = createNavigation(siteContent);
+  if (footerTarget) footerTarget.innerHTML = createFooter(siteContent);
 
   setupMobileNavigation();
-});
+  renderHomeNextEvent(Array.isArray(events) ? events : []);
+  renderEvents(Array.isArray(events) ? events : []);
+}
 
-const events = [
-  {
-    date: "2026-05-15",
-    doors: "18:30",
-    showTime: "19:00",
-    title: "Laute Nacht der Musik (Mai 2026)",
-    venue: "M10City",
-    city: "Munich",
-    country: "Germany",
-    address: "Replace with venue address if useful",
-    url: "https://m10city.de",
-    urlLabel: "lol",
-    price: "€5",
-    showPrice: true,
-    poster: "/images/flyers/laute-nacht-mai26.jpg",
-    description:
-      "Replace this with one short, friendly sentence about the night: special guests, support acts, a summer session, a release celebration, or whatever makes it yours.",
-    entryNote: "Replace with any useful note: accessibility, 18+, support act, or free entry."
-  },
-
-  {
-    date: "2026-06-14",
-    doors: "19:00",
-    showTime: "20:30",
-    title: "Summer Groove Session",
-    venue: "Example Venue",
-    city: "Munich",
-    country: "Germany",
-    address: "Replace with venue address if useful",
-    url: "https://example.com/tickets",
-    urlLabel: "More information",
-    price: "€12 presale · €15 door",
-    showPrice: true,
-    poster: "",
-    description:
-      "Replace this with one short, friendly sentence about the night: special guests, support acts, a summer session, a release celebration, or whatever makes it yours.",
-    entryNote: "Replace with any useful note: accessibility, 18+, support act, or free entry."
-  },
-
-  {
-    date: "2026-05-09",
-    doors: "18:30",
-    showTime: "19:30",
-    title: "Froots × Community Jam",
-    venue: "Example Kulturzentrum",
-    city: "Munich",
-    country: "Germany",
-    address: "",
-    url: "",
-    urlLabel: "",
-    price: "Pay what you can",
-    showPrice: true,
-    poster: "",
-    description:
-      "Replace this with a note about the jam: invited players, instruments welcome, community night, or simply a friendly invitation.",
-    entryNote: "Bring good energy."
-  },
-
-  {
-    date: "2026-03-21",
-    doors: "20:00",
-    showTime: "21:00",
-    title: "Froots Live",
-    venue: "Example Club",
-    city: "Munich",
-    country: "Germany",
-    address: "Replace with the venue address if useful",
-    url: "",
-    urlLabel: "",
-    price: "",
-    showPrice: true,
-    poster: "",
-    description:
-      "Replace with a little archive memory: a thank-you, a photograph link, a favourite moment, or a short review quote.",
-    entryNote: ""
-  }
-];
+document.addEventListener("DOMContentLoaded", initializePage);
 
 function formatHomeEventDate(dateString) {
   const date = new Date(`${dateString}T12:00:00`);
@@ -298,7 +215,7 @@ function formatHomeEventDate(dateString) {
   }).format(date);
 }
 
-function getNextEvent() {
+function getNextEvent(events) {
   const upcomingEvents = events
     .filter((event) => !isPastEvent(event))
     .sort((a, b) => new Date(a.date) - new Date(b.date));
@@ -329,8 +246,8 @@ function createHomeEventMarkup(event) {
 
   const timeParts = [];
 
-  if (event.doors) timeParts.push(`Doors ${event.doors}`);
-  if (event.showTime) timeParts.push(`Show ${event.showTime}`);
+  if (event.doors) timeParts.push(`Doors <strong>${event.doors}</strong>`);
+  if (event.showTime) timeParts.push(`Show <strong>${event.showTime}</strong>`);
 
   const timeMarkup = timeParts.length
     ? `<p class="home-next-event__time">${timeParts.join(" · ")}</p>`
@@ -374,12 +291,12 @@ function createHomeEventMarkup(event) {
   `;
 }
 
-function renderHomeNextEvent() {
+function renderHomeNextEvent(events) {
   const target = document.querySelector("[data-home-next-event]");
 
   if (!target) return;
 
-  const nextEvent = getNextEvent();
+  const nextEvent = getNextEvent(events);
 
   if (!nextEvent) {
     (target.closest("[data-home-next-event-section]") || target).remove();
@@ -446,8 +363,8 @@ function createTicketStatusLabel(status) {
 function createTimeLine(event) {
   const parts = [];
 
-  if (event.doors) parts.push(`Doors ${event.doors}`);
-  if (event.showTime) parts.push(`Show ${event.showTime}`);
+  if (event.doors) parts.push(`Doors <strong>${event.doors}</strong>`);
+  if (event.showTime) parts.push(`Show <strong>${event.showTime}</strong>`);
 
   return parts.length ? `<p class="event-card__time">${parts.join(" · ")}</p>` : "";
 }
@@ -462,8 +379,9 @@ function createEventLink(event, pastEvent = false, className = "button button--s
   }
 
   if (!hasValue(event.url)) {
-    const fallback = pastEvent ? "Past show" : "More details soon";
-    return `<span class="event-card__archive-label">${fallback}</span>`;
+    return pastEvent
+      ? ""
+      : `<span class="event-card__archive-label">More details soon</span>`;
   }
 
   const external = /^https?:\/\//i.test(event.url.trim());
@@ -499,7 +417,8 @@ function createEventCard(event, pastEvent = false) {
     `;
 
   const pastClass = pastEvent ? "event-card--past" : "";
-  const featuredClass = !pastEvent && event.featured ? "event-card--featured" : "";
+  const featuredClass = pastEvent ? "" : "event-card--featured";
+  const eventLinkMarkup = createEventLink(event, pastEvent);
 
   return `
     <article class="event-card ${featuredClass} ${pastClass}">
@@ -524,6 +443,12 @@ function createEventCard(event, pastEvent = false) {
           ${[event.city, event.country].filter(hasValue).length ? `<span>${[event.city, event.country].filter(hasValue).join(", ")}</span>` : ""}
         </p>
 
+        ${
+          hasValue(event.address) && !/^replace with\b/i.test(event.address.trim())
+            ? `<p class="event-card__address"><span class="event-card__address-label">Address</span><span class="event-card__address-value">${event.address.trim()}</span></p>`
+            : ""
+        }
+
         ${createTimeLine(event)}
 
         ${
@@ -540,19 +465,17 @@ function createEventCard(event, pastEvent = false) {
 
         ${
           hasValue(event.entryNote)
-            ? `<p class="event-card__note">${event.entryNote.trim()}</p>`
+            ? `<p class="event-card__note"><span class="event-card__note-icon" aria-hidden="true"><i class="bi bi-info-circle-fill"></i></span>${event.entryNote.trim()}</p>`
             : ""
         }
 
-        <div class="event-card__action">
-          ${createEventLink(event, pastEvent)}
-        </div>
+        ${eventLinkMarkup ? `<div class="event-card__action">${eventLinkMarkup}</div>` : ""}
       </div>
     </article>
   `;
 }
 
-function renderEvents() {
+function renderEvents(events) {
   const upcomingTarget = document.querySelector("[data-upcoming-events]");
   const archiveTarget = document.querySelector("[data-past-events]");
   const upcomingSection = document.querySelector("[data-upcoming-section]");
@@ -584,6 +507,3 @@ function renderEvents() {
       </div>
     `;
 }
-
-document.addEventListener("DOMContentLoaded", renderHomeNextEvent);
-document.addEventListener("DOMContentLoaded", renderEvents);

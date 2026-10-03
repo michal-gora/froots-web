@@ -1,0 +1,18 @@
+{
+  "date": "YYYY-MM-DD",
+  "doors": "",
+  "showTime": "",
+  "title": "Event title",
+  "venue": "Venue name",
+  "city": "",
+  "country": "",
+  "address": "",
+  "url": "",
+  "urlLabel": "",
+  "price": "",
+  "showPrice": true,
+  "poster": "",
+  "description": "",
+  "entryNote": "",
+  "ticketStatus": ""
+}
