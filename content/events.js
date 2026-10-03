@@ -4,7 +4,7 @@ window.frootsEvents = [
     "doors": "18:30",
     "showTime": "19:00",
     "title": "ALL OUR PLACES No. 3",
-    "venue": "LOA - Lights of Arts / Intermezzo",
+    "venue": "LOA - Lights of Arts",
     "city": "Munich",
     "country": "Germany",
     "address": "Graubündener Str. 100, 81475 München ",
