@@ -215,8 +215,8 @@ const events = [
     city: "Munich",
     country: "Germany",
     address: "Replace with venue address if useful",
-    url: "",
-    urlLabel: "",
+    url: "https://m10city.de",
+    urlLabel: "lol",
     price: "€5",
     showPrice: true,
     poster: "/images/flyers/laute-nacht-mai26.jpg",
@@ -453,10 +453,6 @@ function createTimeLine(event) {
 }
 
 function createEventLink(event, pastEvent = false, className = "button button--small") {
-  if (pastEvent) {
-    return `<span class="event-card__archive-label">Past show</span>`;
-  }
-
   if (event.ticketStatus === "cancelled") {
     return `<span class="event-card__archive-label">This event has been cancelled</span>`;
   }
@@ -466,7 +462,8 @@ function createEventLink(event, pastEvent = false, className = "button button--s
   }
 
   if (!hasValue(event.url)) {
-    return `<span class="event-card__archive-label">More details soon</span>`;
+    const fallback = pastEvent ? "Past show" : "More details soon";
+    return `<span class="event-card__archive-label">${fallback}</span>`;
   }
 
   const external = /^https?:\/\//i.test(event.url.trim());
@@ -502,9 +499,10 @@ function createEventCard(event, pastEvent = false) {
     `;
 
   const pastClass = pastEvent ? "event-card--past" : "";
+  const featuredClass = !pastEvent && event.featured ? "event-card--featured" : "";
 
   return `
-    <article class="event-card ${pastClass}">
+    <article class="event-card ${featuredClass} ${pastClass}">
       <div class="event-card__date-block" aria-label="${formatEventDate(event.date)}">
         <span class="event-card__day">${formatDay(event.date)}</span>
         <span class="event-card__month">${formatMonth(event.date)}</span>
@@ -545,10 +543,10 @@ function createEventCard(event, pastEvent = false) {
             ? `<p class="event-card__note">${event.entryNote.trim()}</p>`
             : ""
         }
-      </div>
 
-      <div class="event-card__action">
-        ${createEventLink(event, pastEvent)}
+        <div class="event-card__action">
+          ${createEventLink(event, pastEvent)}
+        </div>
       </div>
     </article>
   `;
@@ -574,6 +572,7 @@ function renderEvents() {
   if (upcomingEvents.length) {
     upcomingTarget.innerHTML = upcomingEvents.map((event) => createEventCard(event)).join("");
   } else {
+    upcomingTarget.closest(".section")?.classList.add("section--no-upcoming");
     upcomingSection?.remove();
   }
 

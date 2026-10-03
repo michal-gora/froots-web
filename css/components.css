@@ -276,7 +276,7 @@
 
 .event-card {
   display: grid;
-  grid-template-columns: 86px 130px minmax(0, 1fr) auto;
+  grid-template-columns: 86px 130px minmax(0, 1fr);
   gap: 1.5rem;
   align-items: center;
   padding: 1rem;
@@ -288,6 +288,11 @@
 
 .event-card--past {
   opacity: 0.78;
+}
+
+.event-card--featured {
+  border: 2px solid var(--leaf-dark);
+  background: #fff5d7;
 }
 
 .event-card__date-block {
@@ -322,15 +327,23 @@
   position: relative;
   display: block;
   overflow: hidden;
-  height: 144px;
+  width: 100%;
+  max-width: 130px;
+  max-height: 220px;
   border-radius: 9px;
   background: var(--leaf-dark);
+  transition:
+    box-shadow 220ms ease,
+    transform 220ms ease;
 }
 
 .event-card__poster img {
   width: 100%;
-  height: 100%;
-  object-fit: cover;
+  height: auto;
+  max-height: 320px;
+  object-fit: contain;
+  border-radius: inherit;
+  transition: transform 280ms ease;
 }
 
 .event-card__poster--placeholder {
@@ -358,6 +371,34 @@
   font-weight: 800;
   line-height: 1.2;
   text-align: center;
+  transition:
+    opacity 180ms ease,
+    transform 180ms ease;
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .event-card__poster:hover,
+  .event-card__poster:focus-visible {
+    z-index: 1;
+    box-shadow: 0 12px 24px rgba(21, 17, 13, 0.28);
+    transform: translateY(-4px) scale(1.035);
+  }
+
+  .event-card__poster:hover img,
+  .event-card__poster:focus-visible img {
+    transform: scale(1.035);
+  }
+
+  .flyer-link__hint {
+    opacity: 0;
+    transform: translateY(100%);
+  }
+
+  .event-card__poster:hover .flyer-link__hint,
+  .event-card__poster:focus-visible .flyer-link__hint {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }
 
 .event-card__heading {
@@ -414,8 +455,8 @@
 }
 
 .event-card__action {
-  min-width: 120px;
-  text-align: right;
+  margin-top: 0.85rem;
+  text-align: left;
 }
 
 .event-card__archive-label {
@@ -463,6 +504,14 @@
 
 .empty-events-message p+p {
   margin-top: 0.5rem;
+}
+
+.section--no-upcoming {
+  padding-top: 0;
+}
+
+.section--no-upcoming .archive-intro {
+  margin-top: 0;
 }
 
 /* Music page */
@@ -780,11 +829,6 @@
     gap: 1rem;
   }
 
-  .event-card__action {
-    grid-column: 2 / -1;
-    text-align: left;
-  }
-
   .footer__links {
     align-items: flex-start;
   }
@@ -820,18 +864,20 @@
 
   .event-card__poster {
     grid-column: 2;
-    height: 180px;
-    order: 3;
+    width: min(100%, 300px);
+    max-width: 300px;
+    max-height: 320px;
+    justify-self: center;
+    order: 4;
+  }
+
+  .event-card__poster img {
+    max-height: 320px;
   }
 
   .event-card__content {
     grid-column: 2;
     order: 2;
-  }
-
-  .event-card__action {
-    grid-column: 2;
-    order: 4;
   }
 
   .event-card__date-block {
