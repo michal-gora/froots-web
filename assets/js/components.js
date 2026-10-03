@@ -25,6 +25,35 @@ const socialLinks = [
   }
 ];
 
+function addFavicon() {
+  const existingFavicon = document.querySelector('link[rel="icon"]');
+
+  if (existingFavicon) {
+    existingFavicon.remove();
+  }
+
+  const favicon = document.createElement("link");
+
+  favicon.rel = "icon";
+  favicon.href = "assets/icons/leftlemon.svg"
+  document.head.appendChild(favicon);
+
+  const existingThemeColor = document.querySelector(
+    'meta[name="theme-color"]'
+  );
+
+  if (existingThemeColor) {
+    existingThemeColor.remove();
+  }
+
+  const themeColor = document.createElement("meta");
+
+  themeColor.name = "theme-color";
+  themeColor.content = "#241811";
+
+  document.head.appendChild(themeColor);
+}
+
 function createNavigation() {
   const navLinks = navigationItems
     .map(({ label, href }) => {
@@ -163,6 +192,8 @@ function setupMobileNavigation() {
 }
 
 document.addEventListener("DOMContentLoaded", () => {
+  addFavicon();
+
   const headerTarget = document.querySelector("[data-site-header]");
   const footerTarget = document.querySelector("[data-site-footer]");
 
