@@ -829,17 +829,6 @@
     gap: 1rem;
   }
 
-  .footer__links {
-    align-items: flex-start;
-  }
-
-  .footer__social-links {
-    justify-content: flex-start;
-  }
-
-  .footer__legal-links {
-    justify-content: flex-start;
-  }
 }
 
 @media (max-width: 620px) {

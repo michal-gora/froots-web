@@ -523,13 +523,8 @@
     max-width: 580px;
   }
 
-  .site-footer__inner {
-    grid-template-columns: 1fr;
-  }
-
   .footer__bottom {
-    align-items: flex-start;
-    flex-direction: column;
+    flex-wrap: wrap;
   }
 
   .band-hero__art {
@@ -540,6 +535,19 @@
 @media (max-width: 620px) {
   .container {
     width: min(calc(100% - 1.5rem), var(--content-width));
+  }
+
+  .site-footer__inner {
+    column-gap: 0.75rem;
+  }
+
+  .footer__identity,
+  .footer__links {
+    min-width: 0;
+  }
+
+  .footer__logo {
+    max-width: 100%;
   }
 
   .section {
