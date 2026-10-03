@@ -1,4 +1,4 @@
-[
+window.frootsEvents = [
   {
     "date": "2026-10-17",
     "doors": "18:30",
@@ -46,4 +46,4 @@
     "description": "Gemeinsame Sonnenwendfeier unter Musikern mit Grill und Lagerfeuerinstrumenten.",
     "entryNote": "Bring your own food. Bring your own instrument (not required)."
   }
-]
+];

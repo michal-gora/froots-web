@@ -1,7 +1,3 @@
-const currentPage = window.location.pathname === "/"
-  ? "/"
-  : `${window.location.pathname.replace(/\/+$/, "")}/`;
-
 function addFavicon() {
   const existingFavicon = document.querySelector('link[rel="icon"]');
 
@@ -31,122 +27,6 @@ function addFavicon() {
   document.head.appendChild(themeColor);
 }
 
-function createNavigation(siteContent) {
-  const navLinks = (siteContent.navigation || [])
-    .map(({ label, href }) => {
-      const isCurrent = href === currentPage;
-      const currentAttribute = isCurrent ? 'aria-current="page"' : "";
-
-      return `
-        <li>
-          <a href="${href}" ${currentAttribute}>${label}</a>
-        </li>
-      `;
-    })
-    .join("");
-
-  return `
-    <header class="site-header">
-      <div class="site-header__inner container">
-        <a class="brand" href="/" aria-label="Froots home">
-          <img
-            class="brand__logo"
-            src="/images/logo/froots-logo-black.svg"
-            alt="Froots"
-          >
-        </a>
-
-        <button
-          class="nav-toggle"
-          type="button"
-          aria-label="Open navigation"
-          aria-expanded="false"
-          aria-controls="primary-navigation"
-        >
-          <span></span>
-          <span></span>
-          <span></span>
-        </button>
-
-        <nav id="primary-navigation" class="primary-nav" aria-label="Primary navigation">
-          <ul>
-            ${navLinks}
-          </ul>
-        </nav>
-      </div>
-    </header>
-  `;
-}
-
-function createSocialLinks(socialLinks) {
-  return socialLinks
-    .map(({ label, href, icon, placeholder }) => {
-      const placeholderAttribute = placeholder
-        ? 'data-social-placeholder="true"'
-        : "";
-
-      return `
-        <a
-          class="social-icon-link"
-          href="${href}"
-          target="_blank"
-          rel="noopener noreferrer"
-          aria-label="Froots on ${label}"
-          title="${label}"
-          ${placeholderAttribute}
-        >
-          <i class="bi bi-${icon}" aria-hidden="true"></i>
-        </a>
-      `;
-    })
-    .join("");
-}
-
-function createFooter(siteContent) {
-  const year = new Date().getFullYear();
-  const email = siteContent.contactEmail || "";
-  const socialLinks = Array.isArray(siteContent.socialLinks)
-    ? siteContent.socialLinks
-    : [];
-  const legalLinks = Array.isArray(siteContent.legalLinks)
-    ? siteContent.legalLinks
-    : [];
-
-  return `
-    <footer class="site-footer">
-      <div class="site-footer__inner container">
-        <div class="footer__identity">
-          <a class="footer__logo-link" href="/" aria-label="Froots home">
-            <img
-              class="footer__logo"
-              src="/images/logo/froots-logo-white.svg"
-              alt="Froots"
-            >
-          </a>
-
-          <p class="brand__tagline">${siteContent.tagline || ""}</p>
-        </div>
-
-        <div class="footer__links">
-          ${email ? `<a class="footer__email" href="mailto:${email}">${email}</a>` : ""}
-
-          <div class="footer__social-links" aria-label="Froots social media">
-            ${createSocialLinks(socialLinks)}
-          </div>
-        </div>
-
-        <div class="footer__bottom">
-          <p class="footer__copyright">© ${year} Froots</p>
-
-          <nav class="footer__legal-links" aria-label="Legal links">
-            ${legalLinks.map(({ label, href }) => `<a href="${href}">${label}</a>`).join("")}
-          </nav>
-        </div>
-      </div>
-    </footer>
-  `;
-}
-
 function setupMobileNavigation() {
   const toggle = document.querySelector(".nav-toggle");
   const navigation = document.querySelector(".primary-nav");
@@ -164,41 +44,21 @@ function setupMobileNavigation() {
   });
 }
 
-async function loadContentFile(path, fallback) {
-  try {
-    const response = await fetch(path);
-
-    if (!response.ok) {
-      throw new Error(`Request failed with status ${response.status}`);
-    }
-
-    return await response.json();
-  } catch (error) {
-    console.error(`Unable to load ${path}`, error);
-    return fallback;
-  }
-}
-
-async function initializePage() {
+function initializePage() {
   addFavicon();
 
-  const [siteContent, events] = await Promise.all([
-    loadContentFile("/content/site.json", {}),
-    loadContentFile("/content/events.json", [])
-  ]);
-
-  const headerTarget = document.querySelector("[data-site-header]");
-  const footerTarget = document.querySelector("[data-site-footer]");
-
-  if (headerTarget) headerTarget.innerHTML = createNavigation(siteContent);
-  if (footerTarget) footerTarget.innerHTML = createFooter(siteContent);
-
   setupMobileNavigation();
+  document.querySelectorAll("[data-current-year]").forEach((year) => {
+    year.textContent = new Date().getFullYear();
+  });
+
+  const events = Array.isArray(window.frootsEvents) ? window.frootsEvents : [];
+
   renderHomeNextEvent(Array.isArray(events) ? events : []);
   renderEvents(Array.isArray(events) ? events : []);
 }
 
-document.addEventListener("DOMContentLoaded", initializePage);
+initializePage();
 
 function formatHomeEventDate(dateString) {
   const date = new Date(`${dateString}T12:00:00`);
