@@ -526,6 +526,7 @@
   }
 
   .primary-nav a::after {
+    bottom: 0.15rem;
     background: var(--citrus);
   }
 
